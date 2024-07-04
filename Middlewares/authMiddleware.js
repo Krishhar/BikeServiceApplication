@@ -30,7 +30,7 @@ const admin = (req, res, next) => {
     if (req.user && req.user.role === 'Owner') {
         console.log(req.user)
         next()
-    } else {
+    } else { 
         res.status(401)
         throw new Error('Not authorized as an owner')
     }

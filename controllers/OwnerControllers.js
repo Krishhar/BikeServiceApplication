@@ -69,11 +69,11 @@ const authOwner = async(req,res) => {
 // @route   GET /owners/:id
 // @access  Private
 const getOwnerById = async(req,res) => {
-    const owner = await Owner.findById(req.params.id).select('-password')
+    const owner = await Owner.findById(req.user.id).select('-password')
 
     if (owner) {
         res.json(owner)
-    } else {
+    } else {  
         res.status(404)
         throw new Error('Owner not found')
     }
@@ -95,7 +95,7 @@ const updateOwnerById = async(req,res) => {
             const salt = await bcrypt.genSalt(10)
             owner.password = await bcrypt.hash(req.body.password, salt)
         }
-
+ 
         const updatedOwner = await owner.save()
 
         res.json({
@@ -125,7 +125,7 @@ const deleteOwnerById = async (req, res) => {
     } else {
         res.status(404)
         throw new Error('Owner not found')
-    }
+    } 
 }
 
 module.exports = {regOwner, authOwner, getOwnerById, updateOwnerById,deleteOwnerById}
