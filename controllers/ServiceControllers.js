@@ -7,7 +7,7 @@ const Service = require('../models/Services')
 const createService = async (req, res) => {
     const { name, description, price, status } = req.body;
 
-    if (!name || !description || !price || !status) {
+    if (!name || !description || !price) {
         res.status(400).json({ message: 'All fields are mandatory' });
         return;
     }
@@ -17,7 +17,6 @@ const createService = async (req, res) => {
             name,
             description,
             price,
-            status,
             ownerId: req.user._id,
         });
 
@@ -117,6 +116,32 @@ const deleteServiceById = async (req, res) => {
     }
 };
 
+const searchServices = async (req, res) => {
+    const { query } = req.query;
+
+    try {
+        const services = await Service.find({
+            name: { $regex: query, $options: 'i' }
+        });
+
+        if (services.length === 0) {
+            return res.status(404).json({ msg: 'No services found' });
+        }
+
+        res.json(services);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+};
 
 
-module.exports = { createService, getAllServices, getServiceById, updateServiceById, deleteServiceById }
+
+module.exports = {
+    createService,
+    getAllServices,
+    getServiceById,
+    updateServiceById,
+    deleteServiceById,
+    searchServices
+}

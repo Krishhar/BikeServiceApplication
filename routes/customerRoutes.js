@@ -13,4 +13,4 @@ router.post('/login', authCustomer)
 router.route('/:id').get(protect, user, getCustomerById)
 .put(protect,user,updateCustomerById).delete(protect,user,deleteCustomerById)
 
-module.exports = router
+module.exports = router 
