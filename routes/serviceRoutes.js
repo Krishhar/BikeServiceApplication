@@ -1,5 +1,5 @@
 const express = require('express')
-const { protect } = require('../Middlewares/authMiddleware')
+const { protect, admin, user } = require('../Middlewares/authMiddleware')
 const { createService,
     getAllServices,
     getServiceById,
@@ -11,10 +11,10 @@ const { createService,
 const router = express.Router()
 
 //service routes
-router.route('/').post(protect, createService).get(protect, getAllServices)
-router.get('/search', protect, searchServices)
-router.route('/:id').get(protect, getServiceById)
-    .put(protect, updateServiceById) 
-    .delete(protect, deleteServiceById)
+router.route('/').post(protect, admin, createService).get(protect, admin, getAllServices)
+router.get('/search', protect, user, searchServices)
+router.route('/:id').get(protect, admin, getServiceById)
+    .put(protect, admin, updateServiceById) 
+    .delete(protect, admin, deleteServiceById) 
 
 module.exports = router 

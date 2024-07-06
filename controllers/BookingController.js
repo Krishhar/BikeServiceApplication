@@ -2,10 +2,9 @@ const Booking = require('../models/Bookings');
 const Customer = require('../models/Customer');
 const Service = require('../models/Services');
 const Vehicle = require('../models/Vehicle');
-const Owner = require('../models/Owner');
 const nodemailer = require('nodemailer');
 
-// Function to send an email
+// Function to send an email notifing the owner about a booking
 const sendBookingEmail = (ownerEmail, bookingDetails) => {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -40,6 +39,47 @@ const sendBookingEmail = (ownerEmail, bookingDetails) => {
         }
     });
 };
+
+// Function to send an email notifing the customer about the delivery
+
+const sendDeliveryEmail = (customerEmail, customer, vehicle) => {
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+        }
+    });
+
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: customerEmail,
+        subject: 'Your Vehicle is Ready for Delivery',
+        text: `Dear ${customer.name},
+
+Your vehicle is ready for delivery. Please find the details below:
+
+Customer Name: ${customer.name}
+Vehicle Brand: ${vehicle.brand}
+Vehicle Model: ${vehicle.model}
+Vehicle Year: ${vehicle.year}
+Vehicle License Plate: ${vehicle.licensePlate}
+
+Thank you for choosing our service.
+
+Best regards,
+Bike Service`
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error('Error sending email:', error);
+        } else {
+            console.log('Email sent:', info.response);
+        }
+    });
+};
+
 
 // @desc    Create a new Booking
 // @route   POST /booking
@@ -97,7 +137,7 @@ const createBooking = async (req, res) => {
 
     } catch (err) {
         console.error(err.message);
-        res.status(500).send('Server error'); 
+        res.status(500).send('Server error');
     }
 };
 
@@ -107,16 +147,16 @@ const createBooking = async (req, res) => {
 
 const getAllBookings = async (req, res) => {
     try {
-        const  booking= await Booking.find({ customerId: req.user.id })
+        const booking = await Booking.find({ customerId: req.user.id })
 
         res.status(200).json(booking);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Failed to fetch bookings' })
     }
-} 
+}
 
-//@desc Get specified sbooking for the authenticated customer
+//@desc Get specified booking for the authenticated customer
 // @route   GET /booking/:id
 // @access  Private (only for authenticated customer)
 
@@ -134,6 +174,75 @@ const getBookingById = async (req, res) => {
     }
 }
 
+// @desc    Get all previous bookings for the authenticated customer
+// @route   GET /bookings/previous
+// @access  Private (only for authenticated customer)
+
+const getPreviousBookings = async (req, res) => {
+    try {
+        const bookings = await Booking.find({
+            customerId: req.user.id,
+            status: 'completed'
+        }).sort({ date: -1 });
+
+        res.status(200).json(bookings);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Failed to fetch bookings' });
+    }
+};
+
+// @desc    Update the status of a specified booking
+// @route   PUT /booking/owner/:id
+// @access  Private (only for authenticated owners)
+
+const updateBookingStatus = async (req, res) => {
+    const allowedStatuses = ['ready for delivery', 'completed'];
+
+    try {
+        const booking = await Booking.findById(req.params.id);
+        if (!booking) {
+            return res.status(404).json({ message: 'Booking not found' });
+        }
+
+        const service = await Service.findById(booking.serviceId);
+        if (!service || service.ownerId.toString() !== req.user.id) {
+            return res.status(403).json({ message: 'User not authorized to update this booking' });
+        }
+
+        const newStatus = req.body.status;
+        if (!allowedStatuses.includes(newStatus)) {
+            return res.status(400).json({ message: 'Invalid status' });
+        }
+
+        // Prevent editing if current status is 'completed'
+        if (booking.status === 'completed') {
+            return res.status(400).json({ message: 'Cannot edit a completed booking' });
+        }
+
+        // Ensure 'completed' status can only come after 'ready for delivery'
+        if (newStatus === 'completed' && booking.status !== 'ready for delivery') {
+            return res.status(400).json({ message: 'Cannot mark as completed before marking as ready for delivery' });
+        }
+
+        booking.status = newStatus;
+
+        const updatedBooking = await booking.save();
+
+        // Send email notification to the owner when the status is updated to 'ready for delivery'
+        if (newStatus === 'ready for delivery') {
+            const customer = await Customer.findById(booking.customerId);
+            const vehicle = await Vehicle.findById(booking.vehicleId);
+            sendDeliveryEmail(customer.email, customer, vehicle);
+        } 
+
+        res.status(200).json(updatedBooking);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Failed to update booking status' }); 
+    }
+};
+    
 
 // @desc    Delete specified services for the authenticated customer
 // @route   DELETE /booking/:id
@@ -141,24 +250,80 @@ const getBookingById = async (req, res) => {
 
 const deleteBookingById = async (req, res) => {
     try {
-        const booking = await Booking.findById(req.params.id);
+        const booking = await Booking.findById(req.params.id)
 
         if (!booking) {
-            return res.status(404).json({ message: 'Booking not found' });
+            return res.status(404).json({ message: 'Booking not found' })
         }
 
         if (booking.customerId.toString() !== req.user.id) {
-            return res.status(403).json({ message: 'User not authorized to delete this booking' });
+            return res.status(403).json({ message: 'User not authorized to delete this booking' })
         }
 
         await Booking.findByIdAndDelete(req.params.id);
-        res.status(200).json({ message: 'Booking deleted successfully' });
+        res.status(200).json({ message: 'Booking deleted successfully' })
 
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Failed to delete Booking' });
+        res.status(500).json({ message: 'Failed to delete Booking' })
     }
 };
 
+// @desc    Get all bookings for a specific owner
+// @route   GET /booking/owner
+// @access  Private (only for owners)
 
-module.exports = { createBooking, getAllBookings, getBookingById,deleteBookingById };
+const getAllBookingsForOwner = async (req, res) => {
+    try {
+        const services = await Service.find({ ownerId: req.user.id })
+        const serviceIds = services.map(service => service._id)
+
+        const bookings = await Booking.find({ serviceId: { $in: serviceIds } })
+            .populate('customerId', 'name email phone')
+            .populate('vehicleId', 'brand model year licensePlate color');
+
+        res.status(200).json(bookings)
+    } catch (err) {
+        console.error(err.message)
+        res.status(500).send('Server error')
+    }
+}
+
+// @desc    Get a specific booking for a specific owner
+// @route   GET /booking/owner/:id
+// @access  Private (only for owners)
+
+const getBookingByIdForOwner = async (req, res) => {
+    try {
+        const booking = await Booking.findById(req.params.id)
+            .populate('customerId', 'name email phone')
+            .populate('vehicleId', 'brand model year licensePlate color')
+
+        if (!booking) {
+            return res.status(404).json({ msg: 'Booking not found' })
+        }
+
+        const service = await Service.findById(booking.serviceId)
+
+        if (!service || service.ownerId.toString() !== req.user.id) {
+            return res.status(403).json({ msg: 'You do not have permission to view this booking' })
+        }
+
+        res.status(200).json(booking)
+    } catch (err) {
+        console.error(err.message)
+        res.status(500).send('Server error')
+    }
+}
+
+
+module.exports = {
+    createBooking,
+    getAllBookings,
+    getBookingById,
+    getPreviousBookings,
+    deleteBookingById,
+    getAllBookingsForOwner,
+    getBookingByIdForOwner,
+    updateBookingStatus
+}
