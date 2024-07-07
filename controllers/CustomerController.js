@@ -7,9 +7,9 @@ const genToken = require('../config/Token')
 
 const regCustomer = async (req, res) => {
     try {
-        const { name, email, password, ph, address } = req.body
+        const { name, email, password, ph } = req.body
 
-        if (!name || !email || !password || !ph || !address) {
+        if (!name || !email || !password || !ph) {
             res.status(400).json({ message: "All fields are mandatory" });
             return;
         }
@@ -26,7 +26,6 @@ const regCustomer = async (req, res) => {
             email,
             password,
             ph,
-            address,
         })
 
         if (customer) {
@@ -36,7 +35,6 @@ const regCustomer = async (req, res) => {
                 name: customer.name,
                 email: customer.email,
                 ph: customer.ph,
-                address: customer.address,
                 token: genToken(customer._id, customer.role)
             })
         }
@@ -63,7 +61,6 @@ const authCustomer = async (req, res) => {
                 name: customer.name,
                 email: customer.email,
                 ph: customer.ph,
-                address: customer.address,
                 token: genToken(customer._id, customer.role)
             });
         } else {
@@ -104,7 +101,6 @@ const updateCustomerById = async (req,res) => {
             customer.name = req.body.name || customer.name
             customer.email = req.body.email || customer.email
             customer.ph = req.body.ph || customer.ph
-            customer.address = req.body.address || customer.address
             if (req.body.password) {
                 const salt = await bcrypt.genSalt(10)
                 customer.password = await bcrypt.hash(req.body.password, salt)
@@ -117,7 +113,6 @@ const updateCustomerById = async (req,res) => {
                 name: updatedCustomer.name,
                 email: updatedCustomer.email,
                 ph: updatedCustomer.ph,
-                address: updatedCustomer.address,
                 role: updatedCustomer.role,
             })
         } else {

@@ -36,7 +36,7 @@ const getAllVehicles = async (req, res) => {
         res.status(200).json(vehicles);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Failed to fetch services' });
+        res.status(500).json({ message: 'Failed to fetch Vehicles' });
     }
 };
 

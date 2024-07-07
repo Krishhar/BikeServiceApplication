@@ -1,0 +1,125 @@
+.login-page {
+    display: flex;
+    height: 100vh;
+    background: #f0f2f5;
+}
+
+.login-section {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.owner-login {
+    background: #fff;
+}
+
+.customer-login {
+    background: #1d2c3e;
+    color: white;
+}
+
+.login-container,
+.ebook-container {
+    text-align: center;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    width: 300px;
+    border-radius: 8px;
+}
+
+.login-container h2,
+.ebook-container h2 {
+    margin-bottom: 10px;
+}
+
+.login-container p,
+.ebook-container p {
+    margin-bottom: 20px;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.remember-me input {
+    margin-right: 10px;
+}
+
+.login-container button,
+.ebook-container button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 20px;
+    width: 100%;
+    border-radius: 4px;
+}
+
+.login-container button:hover,
+.ebook-container button:hover {
+    background-color: #45a049;
+}
+
+.alternative-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.alternative-login hr {
+    flex: 1;
+    margin: 0 10px;
+}
+
+.google-login {
+    background-color: #4285F4;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.signup-link {
+    font-size: 14px;
+}
+
+.ebook-container {
+    text-align: left;
+    padding: 40px;
+    background: #1d2c3e;
+    color: white;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.ebook-container h2 {
+    color: #4CAF50;
+    margin-bottom: 10px;
+}
+
+.ebook-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.ebook-container p {
+    font-size: 16px;
+    margin-bottom: 20px;
+}

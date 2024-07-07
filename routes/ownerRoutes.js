@@ -12,7 +12,7 @@ router.route('/').post(regOwner)
 router.post('/login', authOwner)
 router.route('/:id').get(protect, admin, getOwnerById)
     .put(protect, admin, updateOwnerById)
-    .delete(protect, admin, deleteOwnerById)
+    .delete(protect, admin, deleteOwnerById) 
 
 
 

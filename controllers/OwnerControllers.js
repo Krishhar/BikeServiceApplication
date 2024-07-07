@@ -9,7 +9,7 @@ const regOwner = async (req, res) => {
     try {
         const { name, email, password, ph, address } = req.body
 
-        if (!name || !email || !password || !ph || !address) {
+        if (!name || !email || !password || !ph) {
             res.status(400).json({ message: "All fields are mandatory" });
             return;
         }
@@ -27,7 +27,7 @@ const regOwner = async (req, res) => {
             password,
             ph,
             address,
-        })
+        }) 
 
         if (owner) {
             res.status(201).json({
