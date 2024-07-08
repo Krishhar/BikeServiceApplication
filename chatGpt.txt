@@ -110,6 +110,7 @@ PUT /bookings/
 : Update a booking by ID (for example, to update status).
 DELETE /bookings/
 : Delete a booking by ID.
+<<<<<<< HEAD
 
 lepode9098@cutxsew.com
 
@@ -117,3 +118,5 @@ lepode9098@cutxsew.com
 Connect with riders, manage bookings, and grow your shop! 🏪
 Don't let slow days deflate your profits - we've got your back! 💼
 
+=======
+>>>>>>> 599ad2ad6ef53da8671f3d45e5b58b98f9051c3b
