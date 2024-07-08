@@ -79,14 +79,12 @@ const Register = () => {
                         config
                     );
 
+                    localStorage.setItem("ownerInfo", JSON.stringify(data))
+
                     navigate('/customerPage');
 
                 }
 
-                toast.success("Registration successful", {
-                    position: "bottom-right",
-                    autoClose: 6000,
-                });
 
                 
             } catch (err) {

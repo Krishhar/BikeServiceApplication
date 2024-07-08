@@ -16,5 +16,5 @@ router.get('/search', protect, user, searchServices)
 router.route('/:id').get(protect, admin, getServiceById)
     .put(protect, admin, updateServiceById) 
     .delete(protect, admin, deleteServiceById) 
-
-module.exports = router 
+  
+module.exports = router  

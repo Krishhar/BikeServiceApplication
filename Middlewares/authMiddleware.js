@@ -19,9 +19,9 @@ const protect = async (req, res, next) => {
 
             next()
         } catch (error) {
-            console.error('Error:', error)
-            res.status(401)
-            throw new Error('Not authorized, token failed')
+            console.error('Error:', error)  
+            res.status(401) 
+            throw new Error('Not authorized, token failed') 
         }
     }
 
@@ -45,9 +45,9 @@ const user = (req, res, next) => {
     if (req.user && req.user.role === 'Customer') {
         console.log(req.user)
         next()
-    } else {
+    } else {  
         res.status(401)
-        throw new Error('Not authorized as an Customer')
+        throw new Error('Not authorized as an Customer')  
     }
 }
 

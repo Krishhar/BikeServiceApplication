@@ -10,6 +10,11 @@ export default {
       boxShadow: {
         'custom': '0 2px 4px rgba(0, 0, 0, 0.1)',
       },
+      width: {
+        '40%': '40%',
+        '70%':'70%',
+        '80%':'80%'
+      },
     },
   },
   plugins: [],

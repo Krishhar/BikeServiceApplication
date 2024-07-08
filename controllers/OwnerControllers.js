@@ -36,7 +36,7 @@ const regOwner = async (req, res) => {
                 name: owner.name,
                 email: owner.email,
                 ph: owner.ph,
-                address: owner.address,
+                address: owner.address, 
                 storeId: owner.storeId,
                 token: genToken(owner._id, owner.role)
             })
@@ -66,7 +66,7 @@ const authOwner = async (req, res) => {
                 ph: owner.ph,
                 address: owner.address,
                 storeId: owner.storeId,
-                token: genToken(owner._id, owner.role)
+                token: genToken(owner._id, owner.role)  
             });
         } else {
             res.status(401).json({ message: "Invalid Email or Password" });

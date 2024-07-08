@@ -5,7 +5,7 @@ const Service = require('../models/Services')
 // @access  Private (only for owners)
 
 const createService = async (req, res) => {
-    const { name, description, price, status } = req.body;
+    const { name, description, price } = req.body;
 
     if (!name || !description || !price) {
         res.status(400).json({ message: 'All fields are mandatory' });
@@ -112,7 +112,7 @@ const deleteServiceById = async (req, res) => {
 
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Failed to delete service' });
+        res.status(500).json({ message: 'Failed to delete service' }); 
     }
 };
 

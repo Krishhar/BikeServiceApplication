@@ -38,12 +38,7 @@ const OwnerLoginForm = () => {
                 userData,
                 config
             );
-
-            toast.success("Login successful", {
-                position: "bottom-right",
-                autoClose: 6000,
-            });
-
+            localStorage.setItem("userInfo", JSON.stringify(data));
             navigate('/OwnerPage');
         } catch (err) {
             toast.error(`Error Occurred! ${err.response?.data?.message || err.message}`, {
@@ -51,7 +46,7 @@ const OwnerLoginForm = () => {
                 autoClose: 5000,
             });
         }
-    }
+    } 
 
     return (
         <div className="login-page">
