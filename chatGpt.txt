@@ -1,5 +1,4 @@
 https://chatgpt.com/share/c81e1e63-b188-40eb-b630-a34d82ef06a4
-
 models
 1. Owners
 id (primary key)
@@ -34,6 +33,7 @@ name
 description
 price
 status (e.g., 'pending', 'ready for delivery', 'completed')
+
 Relationships
 Owners have Stores.
 Stores offer multiple Services.
@@ -110,3 +110,10 @@ PUT /bookings/
 : Update a booking by ID (for example, to update status).
 DELETE /bookings/
 : Delete a booking by ID.
+
+lepode9098@cutxsew.com
+
+
+Connect with riders, manage bookings, and grow your shop! 🏪
+Don't let slow days deflate your profits - we've got your back! 💼
+
