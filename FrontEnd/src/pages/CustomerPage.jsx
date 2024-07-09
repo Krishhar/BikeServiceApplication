@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import BikeServiceLogo from '../components/BikeServiceLogog'; // Corrected spelling
 import CustServices from './CustServices';
 import CustBooking from './CustBooking';
-import CustProfile from './CustProfile';
 import Vehicles from './Vehicles';
+import CustomerProfile from './CustomerProfile';
 
 const CustomerPage = () => {
   const [selectedSection, setSelectedSection] = useState('bookings');
@@ -34,7 +34,7 @@ const CustomerPage = () => {
   };
 
   return (
-    <div className='bg-white'>
+    <div className='bg-white h-screen'>
       <section className="bg-gray-50 text-black p-5">
         <div className="sm:flex justify-around sm:ml-0 ml-10">
           <BikeServiceLogo />
@@ -82,7 +82,7 @@ const CustomerPage = () => {
         {selectedSection === 'vehicles' && <Vehicles/>}
         {/* Render Reports Section if uncommented */}
         {/* {selectedSection === 'reports' && <div>Reports Section</div>} */}
-        {selectedSection === 'profile' && <CustProfile />}
+        {selectedSection === 'profile' && <CustomerProfile/>}
       </div>
     </div>
   );

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import bin from '../assets/delete.png';
-
+import VehicleSelectModal from '../components/VehicleSelectModel';
 
 const CustBooking = () => {
     const [services, setServices] = useState([]);
@@ -10,9 +9,11 @@ const CustBooking = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [bookingDate, setBookingDate] = useState('');
     const [filteredBookings, setFilteredBookings] = useState([]);
+    const [vehicles, setVehicles] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedServiceId, setSelectedServiceId] = useState(null);
 
-    const handleSubmit = async (e, id) => {
-        e.preventDefault();
+    const handleSubmit = async (vehicle) => {
         try {
             const token = user.token; // Get token from user object
             if (!token) {
@@ -29,28 +30,34 @@ const CustBooking = () => {
                 alert('Please select a booking date');
                 return;
             }
-            const { data } = await axios.post('/api/bookings/', { serviceId: id, date: bookingDate }, config);
+
+            const { data } = await axios.post('/api/bookings/', {
+                serviceId: selectedServiceId,
+                date: bookingDate,
+                vehicleId: vehicle._id
+            }, config);
             console.log(data);
             setBookings([...bookings, data]);
 
-            alert("booked service successfully")
-
+            alert('Booked service successfully');
         } catch (error) {
             console.error('Failed to book service:', error);
             alert('Failed to book service');
         }
+        setIsModalOpen(false);
     };
 
     useEffect(() => {
         fetchServices();
         fetchBookings();
+        fetchVehicles();
     }, [user]);
 
     const fetchServices = async () => {
         try {
             const token = user.token; // Get token from user object
             if (!token) {
-                throw new Error('No token found'); 
+                throw new Error('No token found');
             }
 
             const config = {
@@ -65,6 +72,27 @@ const CustBooking = () => {
         } catch (error) {
             console.error('Failed to fetch services:', error);
             alert('Failed to fetch Services');
+        }
+    };
+
+    const fetchVehicles = async () => {
+        try {
+            const token = user.token;
+            if (!token) {
+                throw new Error('No token found');
+            }
+
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            };
+
+            const { data } = await axios.get('/api/vehicle', config);
+            setVehicles(data);
+        } catch (error) {
+            console.error('Failed to fetch vehicles:', error);
+            alert('Failed to fetch vehicles');
         }
     };
 
@@ -112,7 +140,7 @@ const CustBooking = () => {
             console.error('Failed to fetch bookings:', error);
             alert('Failed to fetch bookings');
         }
-    }
+    };
 
     const filterBookings = (bookingsData) => {
         const filteredData = bookingsData.filter((booking) => booking.status !== 'completed');
@@ -138,11 +166,24 @@ const CustBooking = () => {
             // Remove the deleted service from the local state
             setBookings(bookings.filter(booking => booking._id !== id));
 
-            alert("Booking Deleted")
+            alert('Booking Deleted');
         } catch (error) {
             console.error('Failed to delete Booking:', error);
             alert('Failed to delete Booking');
         }
+    };
+
+    const openModal = (serviceId) => {
+        setSelectedServiceId(serviceId);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleSelectVehicle = (vehicle) => {
+        handleSubmit(vehicle);
     };
 
     return (
@@ -154,11 +195,11 @@ const CustBooking = () => {
                         <div key={booking._id}
                             className="bg-gray-200 p-5 rounded shadow-lg shadow-gray-500 border-4 border-solid border-blue-400">
                             <div className='flex justify-between mb-4'>
-                            <p className="text-gray-600">Service Name: {booking.serviceId.name}</p>
-                            <p className="font-bold border-b-2 border-solid border-blue-400 p-1 rounded-sm">₹{booking.serviceId.price}</p>
+                                <p className="text-gray-600">Service Name: {booking.serviceId.name}</p>
+                                <p className="font-bold border-b-2 border-solid border-blue-400 p-1 rounded-sm">₹{booking.serviceId.price}</p>
                             </div>
                             <div className='flex justify-between'>
-                            <p className="text-gray-600">Booked Date: {new Date(booking.date).toISOString().split('T')[0]}</p>
+                                <p className="text-gray-600">Booked Date: {new Date(booking.date).toISOString().split('T')[0]}</p>
                                 <p className={`text-gray-600 font-semibold ${booking.status === 'pending' ? 'text-red-500' : booking.status === 'ready for delivery' ? 'text-purple-500' : 'text-green-500'}`}>{booking.status}</p>
                             </div>
 
@@ -226,12 +267,18 @@ const CustBooking = () => {
                             </div>
                             <button
                                 className="w-full bg-blue-200 text-blue-600 font-bold border-2 border-blue-100 py-2 rounded-2xl shadow-md shadow-gray-400"
-                                onClick={(e) => handleSubmit(e, service._id)}
+                                onClick={() => openModal(service._id)}
                             >Book Now</button>
                         </div>
                     ))}
                 </div>
             </div>
+            <VehicleSelectModal
+                isOpen={isModalOpen}
+                onRequestClose={closeModal}
+                vehicles={vehicles}
+                onSelectVehicle={handleSelectVehicle}
+            />
         </div>
     );
 };

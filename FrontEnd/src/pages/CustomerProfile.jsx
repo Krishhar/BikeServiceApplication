@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const OwnerProfile = () => {
+const CustomerProfile = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
-    const [address, setAddress] = useState('');
     const [profile, setProfile] = useState({});
 
     useEffect(() => {
-        const ownerId = localStorage.getItem('_id');
-        if (ownerId) {
-            fetchOwnerDetails(ownerId);
+        const customerId = localStorage.getItem('_id');
+        if (customerId) {
+            fetchcustomerDetails(customerId);
         }
     }, []);
 
-    const fetchOwnerDetails = async (id) => {
+    const fetchcustomerDetails = async (id) => {
         try {
             const user = JSON.parse(localStorage.getItem('userInfo'));
             const token = user.token;
@@ -29,18 +28,17 @@ const OwnerProfile = () => {
                 },
             };
 
-            const { data } = await axios.get(`/api/owners/${id}`, config);
+            const { data } = await axios.get(`/api/customers/${id}`, config);
             setProfile(data);
             setName(data.name);
             setEmail(data.email);
             setPhone(data.phone);
-            setAddress(data.address);
         } catch (error) {
-            console.error('Failed to fetch owner details:', error);
+            console.error('Failed to fetch customer details:', error);
         }
     };
 
-    const updateOwnerDetails = async () => {
+    const updatecustomerDetails = async () => {
         try {
             const user = JSON.parse(localStorage.getItem('userInfo'));
             const token = user.token;
@@ -57,21 +55,20 @@ const OwnerProfile = () => {
             const updatedProfile = {
                 name,
                 email,
-                phone,
-                address
+                phone
             };
 
-            const { data } = await axios.put(`/api/owners/${profile._id}`, updatedProfile, config);
+            const { data } = await axios.put(`/api/customers/${profile._id}`, updatedProfile, config);
             setProfile(data);
             alert('Profile updated successfully');
         } catch (error) {
-            console.error('Failed to update owner details:', error);
+            console.error('Failed to update customer details:', error);
         }
     };
 
     return (
         <div className="p-20 bg-gray-100 text-black">
-            <h1 className='text-center font-bold text-4xl'>Owner Profile Info</h1>
+            <h1 className='text-center font-bold text-4xl'>customer Profile Info</h1>
             <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg h-full w-70% text-black mt-10 mx-auto">
                 <div className="space-y-4">
                     <div>
@@ -104,21 +101,12 @@ const OwnerProfile = () => {
                         />
                     </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
-                        <textarea
-                            className="w-full p-2 border rounded-md"
-                            rows="3"
-                            value={address}
-                            onChange={(e) => setAddress(e.target.value)}
-                        ></textarea>
-                    </div>
                 </div>
 
                 <div className="mt-6 text-right">
                     <button
                         className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300"
-                        onClick={updateOwnerDetails}
+                        onClick={updatecustomerDetails}
                     >
                         Save changes
                     </button>
@@ -128,4 +116,4 @@ const OwnerProfile = () => {
     );
 };
 
-export default OwnerProfile;
+export default CustomerProfile;
