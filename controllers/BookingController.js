@@ -95,7 +95,7 @@ const createBooking = async (req, res) => {
             return res.status(404).json({ msg: 'Customer not found' });
         }
 
-        const service = await Service.findById(serviceId).populate('ownerId');
+        const service = await Service.findById(serviceId).populate('ownerId', 'name ph');
         if (!service) {
             return res.status(404).json({ msg: 'Service not found' });
         }
@@ -103,11 +103,12 @@ const createBooking = async (req, res) => {
         const vehicle = await Vehicle.findOne({ customerId });
         if (!vehicle) {
             return res.status(404).json({ msg: 'Vehicle not found' });
-        } 
+        }
 
         const newBooking = new Booking({
             customerId,
             serviceId,
+            ownerId: service.ownerId,
             vehicleId: vehicle._id,
             date,
             status: 'pending'

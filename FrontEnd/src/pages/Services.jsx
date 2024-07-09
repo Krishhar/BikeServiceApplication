@@ -71,11 +71,11 @@ const Services = () => {
         }
     };
 
-    const deleteService = async (id) => {
+    const deleteService = async (id) => { 
         try {
             const token = user.token; // Get token from user object
             if (!token) {
-                throw new Error('No token found');
+                throw new Error('No token found'); 
             }
 
             const config = {

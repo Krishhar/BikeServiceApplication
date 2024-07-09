@@ -3,6 +3,7 @@ import BikeServiceLogo from '../components/BikeServiceLogog'; // Corrected spell
 import CustServices from './CustServices';
 import CustBooking from './CustBooking';
 import CustProfile from './CustProfile';
+import Vehicles from './Vehicles';
 
 const CustomerPage = () => {
   const [selectedSection, setSelectedSection] = useState('bookings');
@@ -51,12 +52,12 @@ const CustomerPage = () => {
               Services
             </h2>
             {/* Uncomment if needed */}
-            {/* <h2
+            <h2
               className="cursor-pointer hover:text-blue-500"
-              onClick={() => handleSectionChange('reports')}
+              onClick={() => handleSectionChange('vehicles')}
             >
-              Reports
-            </h2> */}
+              Vehicles
+            </h2>
             <h2
               className="cursor-pointer hover:text-blue-500"
               onClick={() => handleSectionChange('profile')}
@@ -78,6 +79,7 @@ const CustomerPage = () => {
       <div>
         {selectedSection === 'services' && <CustServices />}
         {selectedSection === 'bookings' && <CustBooking />}
+        {selectedSection === 'vehicles' && <Vehicles/>}
         {/* Render Reports Section if uncommented */}
         {/* {selectedSection === 'reports' && <div>Reports Section</div>} */}
         {selectedSection === 'profile' && <CustProfile />}

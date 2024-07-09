@@ -1,3 +1,4 @@
+const Booking = require('../models/Bookings');
 const Service = require('../models/Services')
 
 // @desc    Create a new service
@@ -146,6 +147,19 @@ const getLowestPriceServices = async (req, res) => {
     res.json(services);
 }
 
+const previousServices = async (req, res) => {
+    try {
+        // Find bookings with status "completed" and populate service details
+        const bookings = await Booking.find({ customerId: req.user.id, status: 'completed' })
+        .populate('serviceId')
+        .populate('vehicleId')
+
+        res.json(bookings);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 
 
 module.exports = {
@@ -155,5 +169,6 @@ module.exports = {
     updateServiceById,
     deleteServiceById,
     searchServices,
-    getLowestPriceServices
+    getLowestPriceServices,
+    previousServices
 }

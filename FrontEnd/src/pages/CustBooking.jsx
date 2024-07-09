@@ -9,11 +9,7 @@ const CustBooking = () => {
     const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('userInfo')));
     const [searchTerm, setSearchTerm] = useState('');
     const [bookingDate, setBookingDate] = useState('');
-
-    useEffect(() => {
-        fetchServices();
-        fetchBookings();
-    }, [user]);
+    const [filteredBookings, setFilteredBookings] = useState([]);
 
     const handleSubmit = async (e, id) => {
         e.preventDefault();
@@ -37,17 +33,24 @@ const CustBooking = () => {
             console.log(data);
             setBookings([...bookings, data]);
 
+            alert("booked service successfully")
+
         } catch (error) {
             console.error('Failed to book service:', error);
             alert('Failed to book service');
         }
     };
 
+    useEffect(() => {
+        fetchServices();
+        fetchBookings();
+    }, [user]);
+
     const fetchServices = async () => {
         try {
             const token = user.token; // Get token from user object
             if (!token) {
-                throw new Error('No token found');
+                throw new Error('No token found'); 
             }
 
             const config = {
@@ -102,11 +105,18 @@ const CustBooking = () => {
             };
 
             const { data } = await axios.get('/api/bookings/', config);
-            setBookings(data);
+            const sortedBookings = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            setBookings(sortedBookings);
+            filterBookings(sortedBookings);
         } catch (error) {
             console.error('Failed to fetch bookings:', error);
             alert('Failed to fetch bookings');
         }
+    }
+
+    const filterBookings = (bookingsData) => {
+        const filteredData = bookingsData.filter((booking) => booking.status !== 'completed');
+        setFilteredBookings(filteredData);
     };
 
     const deleteBooking = async (id) => {
@@ -139,10 +149,10 @@ const CustBooking = () => {
         <div className="p-6 w-full bg-gray-100 h-screen flex text-black">
             <div className="w-30% bg-gray-200 p-6 border-r overflow-y-auto scrollbar-hide">
                 <h2 className="text-2xl font-bold mb-4">Bookings</h2>
-                <div className="space-y-4">
-                    {bookings.map((booking) => (
+                <div className="space-y-4 shadow-inner shadow-gray-600 p-4 border-4 border-blue-200">
+                    {filteredBookings.map((booking) => (
                         <div key={booking._id}
-                            className="bg-gray-200 p-5 rounded shadow-md shadow-black border-4 border-solid border-blue-400">
+                            className="bg-gray-200 p-5 rounded shadow-lg shadow-gray-500 border-4 border-solid border-blue-400">
                             <div className='flex justify-between mb-4'>
                             <p className="text-gray-600">Service Name: {booking.serviceId.name}</p>
                             <p className="font-bold border-b-2 border-solid border-blue-400 p-1 rounded-sm">₹{booking.serviceId.price}</p>
@@ -154,7 +164,7 @@ const CustBooking = () => {
 
                             <br />
                             <div className='flex justify-between'>
-                                <button onClick={() => deleteBooking(booking._id)} className='shadow-sm shadow-black border-2 border-solid border-blue-600'>
+                                <button onClick={() => deleteBooking(booking._id)} className='shadow-md shadow-gray-800 border-2 border-solid border-blue-200 bg-blue-400 p-1 rounded-xl text-white'>
                                     Cancel Booking
                                 </button>
                             </div>
@@ -165,17 +175,17 @@ const CustBooking = () => {
             <div className='w-66% overflow-y-auto scrollbar-hide'>
                 <div className="mb-6 flex items-center space-x-4 pl-6 justify-between">
                     <h1 className='text-3xl font-bold text-blue-900'>Services Available</h1>
-                    <div className='space-x-5'>
+                    <div className='space-x-4 px-5'>
                         <input
                             type="text"
                             placeholder="Search services"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="p-2 border rounded"
+                            className="p-2 border rounded shadow-inner shadow-gray-400"
                         />
                         <button
                             onClick={handleSearch}
-                            className="bg-blue-500 text-white px-4 py-2 rounded">
+                            className="bg-blue-500 text-white px-4 py-2 rounded-xl shadow-sm shadow-black">
                             Search
                         </button>
                     </div>
@@ -185,9 +195,9 @@ const CustBooking = () => {
                     <p className="text-sm text-gray-600">Showing {services.length} services</p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pl-6 overflow-scroll">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pl-6 overflow-scroll m-3 p-3">
                     {services.map((service, index) => (
-                        <div key={index} className="bg-white p-4 rounded-lg shadow">
+                        <div key={index} className="bg-white p-4 rounded-lg shadow-md shadow-gray-700 border-2 border-blue-300">
                             <div className="flex justify-between items-start mb-4">
                                 <div>
                                     <h3 className="font-bold text-lg">{service.name}</h3>
@@ -210,12 +220,12 @@ const CustBooking = () => {
                                 <input
                                     type="date"
                                     id={`date-${index}`}
-                                    className="p-2 border rounded w-full"
+                                    className="p-2 border rounded w-full shadow-inner shadow-gray-400"
                                     onChange={(e) => setBookingDate(e.target.value)}
                                 />
                             </div>
                             <button
-                                className="w-full bg-blue-100 text-blue-500 py-2 rounded"
+                                className="w-full bg-blue-200 text-blue-600 font-bold border-2 border-blue-100 py-2 rounded-2xl shadow-md shadow-gray-400"
                                 onClick={(e) => handleSubmit(e, service._id)}
                             >Book Now</button>
                         </div>

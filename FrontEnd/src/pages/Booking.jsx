@@ -72,7 +72,7 @@ const Booking = () => {
                 booking._id === bookingId ? { ...booking, status: newStatus } : booking
             ));
 
-            if(newStatus === 'completed'){
+            if(newStatus === 'ready for delivery'){
                 alert("Email sent to user")
             }
 
@@ -94,9 +94,9 @@ const Booking = () => {
     };
 
     return (
-        <div className="p-6 bg-gray-100 text-black h-screen">
-            <h1 className="text-2xl font-semibold mb-4 text-black overflow-scroll">Booking Details</h1>
-            <div className="bg-white rounded-lg shadow">
+        <div className="p-6 bg-gray-100 text-black h-screen overflow-scroll">
+            <h1 className="text-2xl font-semibold mb-4 text-black">Booking Details</h1>
+            <div className="bg-white rounded-lg shadow ">
                 <div className="flex justify-between items-center p-4 border-b">
                     <div className="space-x-4">
                         <button
@@ -129,7 +129,7 @@ const Booking = () => {
                 </div>
                 <div className="p-4">
                     <p className="text-gray-500 mb-4">{bookings.length} documents</p>
-                    <table className="w-full">
+                    <table className="w-full overflow-scroll">
                         <thead>
                             <tr className="text-left text-gray-500">
                                 <th className="py-2">Customer Name</th>
