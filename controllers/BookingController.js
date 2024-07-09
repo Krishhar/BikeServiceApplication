@@ -54,7 +54,7 @@ const sendDeliveryEmail = (customerEmail, customer, vehicle) => {
     const mailOptions = {
         from: process.env.EMAIL_USER,
         to: customerEmail,
-        subject: 'Your Vehicle is Ready for Delivery',
+        subject: 'Your Vehicle is ready for delivery',
         text: `Dear ${customer.name},
 
 Your vehicle is ready for delivery. Please find the details below:
@@ -279,11 +279,12 @@ const getAllBookingsForOwner = async (req, res) => {
         const serviceIds = services.map(service => service._id)
 
         const bookings = await Booking.find({ serviceId: { $in: serviceIds } })
-            .populate('customerId', 'name email phone')
+            .populate('customerId', 'name email ph')
+            .populate('serviceId', 'name')
             .populate('vehicleId', 'brand model year licensePlate color');
 
         res.status(200).json(bookings)
-    } catch (err) {
+    } catch (err) { 
         console.error(err.message)
         res.status(500).send('Server error')
     }
@@ -296,7 +297,8 @@ const getAllBookingsForOwner = async (req, res) => {
 const getBookingByIdForOwner = async (req, res) => {
     try {
         const booking = await Booking.findById(req.params.id)
-            .populate('customerId', 'name email phone')
+            .populate('serviceId', 'name')
+            .populate('customerId', 'name email ph')
             .populate('vehicleId', 'brand model year licensePlate color')
 
         if (!booking) {

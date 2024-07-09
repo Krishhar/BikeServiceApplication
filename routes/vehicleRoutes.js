@@ -12,6 +12,6 @@ router.route('/:id')
     .get(protect, user, getVehicleById)
     .put(protect, user, updateVehicleById)
     .delete(protect, user, deleteVehicleById)
-
+ 
  
 module.exports = router;

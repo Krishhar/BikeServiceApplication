@@ -132,11 +132,12 @@ const Services = () => {
     return (
         <>
         <div className="flex h-screen bg-gray-100 text-black">
-            <div className="w-40% bg-white p-6 border-r overflow-scroll">
+                <div className="w-40% bg-gray-200 p-6 border-r overflow-scroll ">
                 <h2 className="text-2xl font-bold mb-4">Services</h2>
                 <div className="space-y-4">
                     {services.map((service) => (
-                        <div key={service._id} className="bg-gray-200 p-4 rounded shadow-md shadow-black border-4 border-solid border-blue-400">
+                        <div key={service._id} 
+                        className="bg-gray-200 p-4 rounded shadow-md shadow-black border-4 border-solid border-blue-400">
                             <div className='flex justify-between'>
                                 <h3 className="font-bold text-xl">{service.name}</h3>
                                 <p className="font-bold border-b-2 border-solid border-blue-400 p-1 rounded-sm">₹{service.price}</p>
@@ -163,22 +164,22 @@ const Services = () => {
             </div>
             <div className='h-full border-solid border-2'></div>
             <div className="w-full flex flex-col items-center bg-gray-800">
-                <div className="w-full max-w-md p-10 rounded-xl bg-white mt-20">
+                <div className="w-full max-w-md p-10 rounded-xl bg-white mt-20 shadow-lg shadow-black border-4 border-solid border-blue-700" >
                     <h1 className="text-2xl font-bold mb-2">Add Services</h1>
-                    <p className="text-sm text-gray-600 mb-6">
+                    <p className="text-sm text-gray-600 mb-6 font-bold">
                         Enter the
-                        <ol className="list-decimal list-inside ml-2">
+                        <ol className="list-decimal list-inside ml-2 font-semibold">
                             <li>Name of the Service</li>
                             <li>Description of the Service</li>
                             <li>Price of the Service</li>
                         </ol>
                     </p>
 
-                    <form className="space-y-4" onSubmit={handleSubmit}>
+                    <form className="space-y-4 border-4 border-gray-700 shadow-inner shadow-gray-700  p-5" onSubmit={handleSubmit}>
                         <div>
                             <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Name*</label>
                             <input type="text" id="name" name="name" placeholder="Enter your Service name"
-                                className="w-full p-2 border border-gray-300 rounded-md"
+                                className="w-full p-2 border-2 shadow-inner shadow-black border-gray-300 rounded-md"
                                 required
                                 onChange={(e) => setName(e.target.value)}
                                 value={name}
@@ -188,7 +189,7 @@ const Services = () => {
                         <div>
                             <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">Description</label>
                             <textarea id="description" name="description" rows="4" placeholder="Write your Description..."
-                                className="w-full p-2 border border-gray-300 rounded-md"
+                                className="w-full p-2 border-2 shadow-inner shadow-black border-gray-300 rounded-md"
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}></textarea>
                         </div>
@@ -200,7 +201,7 @@ const Services = () => {
                         </div>
 
                         <button type="submit"
-                            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
+                            className="w-full bg-blue-600 text-white py-2 px-4 rounded-2xl shadow-md shadow-black hover:bg-blue-700 "
                         >Add Service</button>
                     </form>
                 </div>
