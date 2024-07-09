@@ -62,7 +62,7 @@ const Register = () => {
                         userData,
                         config
                     );
-
+                    localStorage.setItem("ownerInfo", JSON.stringify(response.data));
                     navigate('/OwnerPage');
                 } else {
                     const userData1 = {
@@ -79,19 +79,11 @@ const Register = () => {
                         config
                     );
 
-                    localStorage.setItem("ownerInfo", JSON.stringify(data))
-
+                    localStorage.setItem("customerInfo", JSON.stringify(response.data));
                     navigate('/customerPage');
-
                 }
-
-
-                
-            } catch (err) {
-                toast.error(`Error Occurred! ${err.response?.data?.message || err.message}`, {
-                    position: "bottom-right",
-                    autoClose: 5000,
-                });
+            } catch (error) {
+                console.error('Registration failed:', error);
             }
         }
     };

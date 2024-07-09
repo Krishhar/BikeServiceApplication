@@ -9,7 +9,7 @@ import CustomerLoginForm from '../components/CustomerLoginForm';
 const Login = () => {
     return (
         <>
-            <div className='p-5 flex justify-between'>
+            <div className='p-5 flex justify-between bg-gray-200'>
                 <BikeServiceLogog />
             </div>
             <div className="login-page">

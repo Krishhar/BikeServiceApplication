@@ -103,7 +103,7 @@ const createBooking = async (req, res) => {
         const vehicle = await Vehicle.findOne({ customerId });
         if (!vehicle) {
             return res.status(404).json({ msg: 'Vehicle not found' });
-        }
+        } 
 
         const newBooking = new Booking({
             customerId,
@@ -147,7 +147,7 @@ const createBooking = async (req, res) => {
 
 const getAllBookings = async (req, res) => {
     try {
-        const booking = await Booking.find({ customerId: req.user.id })
+        const booking = await Booking.find({ customerId: req.user.id }).populate('serviceId','name price description')
 
         res.status(200).json(booking);
     } catch (error) {

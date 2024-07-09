@@ -116,6 +116,9 @@ const deleteServiceById = async (req, res) => {
     }
 };
 
+// @desc    Search services
+// @route   GET /api/services/search
+// @access  Private
 const searchServices = async (req, res) => {
     const { query } = req.query;
 
@@ -135,6 +138,14 @@ const searchServices = async (req, res) => {
     }
 };
 
+// @desc    Get services with the lowest price
+// @route   GET /api/services/lowest-price
+// @access  Private
+const getLowestPriceServices = async (req, res) => {
+    const services = await Service.find().sort({ price: 1 }).limit(6);
+    res.json(services);
+}
+
 
 
 module.exports = {
@@ -143,5 +154,6 @@ module.exports = {
     getServiceById,
     updateServiceById,
     deleteServiceById,
-    searchServices
+    searchServices,
+    getLowestPriceServices
 }

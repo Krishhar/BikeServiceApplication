@@ -8,7 +8,7 @@ const CustomerSchema = new schema({
     email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
     ph: { type: String, required: true },
-    // storeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Store', default: null },
+    bookingId: { type: mongoose.Schema.Types.ObjectId, ref: 'Bookings', default: null },
 }, { timestamps: true })
 
 CustomerSchema.pre("save", async function (next) {

@@ -34,7 +34,7 @@ const OwnerPage = () => {
 
   return (
     <div>
-      <section className="bg-black mt-5">
+      <section className="bg-gray-50 text-black p-5">
         <div className="sm:flex justify-around sm:ml-0 ml-10">
           <BikeServiceLogo />
           <div className="flex space-x-4 mt-4 font-semibold">
@@ -72,7 +72,7 @@ const OwnerPage = () => {
           </div>
         </div>
       </section>
-      <div className="h-1 bg-white mt-4">
+      <div className="h-1 bg-black">
         <hr />
       </div>
       <div>

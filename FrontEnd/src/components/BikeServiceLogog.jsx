@@ -3,7 +3,7 @@ import React from 'react'
 const BikeServiceLogog = () => {
   return (
       <div className='flex space-x-2'>
-          <svg width="48" height="45" viewBox="-30 0 280 190" xmlns="http://www.w3.org/2000/svg">
+          <svg width="47" height="45" viewBox="-34 4 280 190" xmlns="http://www.w3.org/2000/svg">
               <g id="wheel">
                   <circle cx="100" cy="100" r="130" fill="#113191c5" stroke="black" strokeWidth="5" />
                   <circle cx="100" cy="100" r="105" fill="#6B7280" stroke="black" strokeWidth="5" />
@@ -30,7 +30,7 @@ const BikeServiceLogog = () => {
               <animateTransform href="#wheel" attributeName="transform" attributeType="XML" type="rotate" from="0 100 100"
                   to="360 100 100" dur="4s" repeatCount="indefinite" />
           </svg>
-          <h1 className='text-3xl font-bold mt-2'>BikeService</h1>
+          <h1 className='text-3xl font-bold mt-2 text-blue-700'>BikeService</h1>
       </div>
   )
 }

@@ -37,17 +37,12 @@ const CustomerLoginForm = () => {
                 config
             );
 
-            toast.success("Login successful", {
-                position: "bottom-right",
-                autoClose: 6000,
-            });
 
+            localStorage.setItem("userInfo", JSON.stringify(data));
             navigate('/customerPage');
         } catch (err) {
-            toast.error(`Error Occurred! ${err.response?.data?.message || err.message}`, {
-                position: "bottom-right",
-                autoClose: 5000,
-            });
+            console.log(err)
+            alert("Login Failed")
         }
     }
   return (
