@@ -1,53 +1,59 @@
 import React, { useState } from 'react';
-import '../styles/ownerLoginForm.css';
+import '../styles/ownerLoginForm.css'; // Import the CSS file for styling
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; 
-import { toast } from 'react-toastify'; 
-import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 
+// OwnerLoginForm component
 const OwnerLoginForm = () => {
+    // State variables to store the email and password
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    // Get the navigate function from the useNavigate hook
     const navigate = useNavigate();
 
+    // Event handler for the login button
     const handleLogin = async (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Prevent the default form submission behavior
+
+        // Validate the input fields
         if (!email || !password) {
-            toast.warn("Fill all Fields", {
-                position: "bottom-right",
-                autoClose: 6000,
-            });
+            alert("fill all fields")
             return;
         }
 
         try {
+            // Set up the axios request configuration
             const config = {
                 headers: {
                     "Content-type": "application/json"
                 }
             };
 
+            // Create the user data object
             const userData = {
                 email,
                 password,
             };
 
+            // Send a POST request to the server to authenticate the user
             const { data } = await axios.post(
                 "/api/owner/login",
                 userData,
                 config
             );
+
+            // Store the user information in the local storage
             localStorage.setItem("userInfo", JSON.stringify(data));
+
+            // Navigate to the owner page
             navigate('/OwnerPage');
         } catch (err) {
-            toast.error(`Error Occurred! ${err.response?.data?.message || err.message}`, {
-                position: "bottom-right",
-                autoClose: 5000,
-            });
+            alert("an Error Occurred")
         }
-    } 
+    }
 
+    // Render the owner login form
     return (
         <div className="login-page">
             <div className="login-section owner-login">
@@ -83,4 +89,4 @@ const OwnerLoginForm = () => {
     );
 }
 
-export default OwnerLoginForm;
+export default OwnerLoginForm

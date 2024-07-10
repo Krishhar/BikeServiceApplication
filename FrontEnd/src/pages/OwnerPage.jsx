@@ -4,12 +4,15 @@ import BikeServiceLogo from '../components/BikeServiceLogog'; // Corrected spell
 import Booking from './Booking';
 import OwnerProfile from './OwnerProfile';
 
+// OwnerPage component
 const OwnerPage = () => {
+  // State variable to keep track of the selected section
   const [selectedSection, setSelectedSection] = useState('services');
 
   // Load the selected section from localStorage on component mount
   useEffect(() => {
     try {
+      // Retrieve the selected section from localStorage
       const savedSection = localStorage.getItem('selectedSection');
       if (savedSection) {
         setSelectedSection(savedSection);
@@ -25,18 +28,24 @@ const OwnerPage = () => {
     localStorage.setItem('selectedSection', section);
   };
 
+  // Function to handle user logout
   const logOut = () => {
+    // Remove user information and selected section from localStorage
     localStorage.removeItem('userInfo');
     localStorage.removeItem('selectedSection');
     // Clear any other session-related data
     window.location.href = '/login'; // Redirect to login page
   };
 
+  // Render the owner page
   return (
     <div>
+      {/* Navigation section */}
       <section className="bg-gray-50 text-black p-5">
         <div className="sm:flex justify-around sm:ml-0 ml-10">
+          {/* Bike service logo */}
           <BikeServiceLogo />
+          {/* Navigation links */}
           <div className="flex space-x-4 mt-4 font-semibold">
             <h2
               className="cursor-pointer hover:text-blue-500"
@@ -50,13 +59,6 @@ const OwnerPage = () => {
             >
               Bookings
             </h2>
-            {/* Uncomment if needed */}
-            {/* <h2
-              className="cursor-pointer hover:text-blue-500"
-              onClick={() => handleSectionChange('reports')}
-            >
-              Reports
-            </h2> */}
             <h2
               className="cursor-pointer hover:text-blue-500"
               onClick={() => handleSectionChange('profile')}
@@ -72,14 +74,15 @@ const OwnerPage = () => {
           </div>
         </div>
       </section>
+      {/* Horizontal line separator */}
       <div className="h-1 bg-black">
         <hr />
       </div>
+      {/* Content section */}
       <div>
+        {/* Render the appropriate section based on the selected section */}
         {selectedSection === 'services' && <Services />}
         {selectedSection === 'bookings' && <Booking />}
-        {/* Render Reports Section if uncommented */}
-        {/* {selectedSection === 'reports' && <div>Reports Section</div>} */}
         {selectedSection === 'profile' && <OwnerProfile />}
       </div>
     </div>

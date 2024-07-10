@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+// Vehicles component
 const Vehicles = () => {
+    // State variables to hold the vehicles and the form data
     const [vehicles, setVehicles] = useState([]);
     const [formData, setFormData] = useState({
         brand: '',
@@ -12,15 +14,20 @@ const Vehicles = () => {
     });
     const [editingVehicle, setEditingVehicle] = useState(null);
 
+    // Function to fetch the vehicles
     const fetchVehicles = async () => {
         try {
+            // Get the user token from localStorage
             const token = JSON.parse(localStorage.getItem('userInfo')).token;
+
+            // Set up the axios request configuration
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             };
 
+            // Make a GET request to fetch the vehicles
             const response = await axios.get('/api/vehicle', config);
             setVehicles(response.data);
         } catch (error) {
@@ -28,10 +35,12 @@ const Vehicles = () => {
         }
     };
 
+    // Fetch the vehicles when the component mounts
     useEffect(() => {
         fetchVehicles();
     }, []);
 
+    // Function to handle form data changes
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -39,10 +48,14 @@ const Vehicles = () => {
         });
     };
 
+    // Function to handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            // Get the user token from localStorage
             const token = JSON.parse(localStorage.getItem('userInfo')).token;
+
+            // Set up the axios request configuration
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -50,16 +63,17 @@ const Vehicles = () => {
             };
 
             if (editingVehicle) {
-                // Update vehicle
+                // Update the existing vehicle
                 const response = await axios.put(`/api/vehicle/${editingVehicle._id}`, formData, config);
                 setVehicles(vehicles.map(vehicle => (vehicle._id === editingVehicle._id ? response.data : vehicle)));
                 setEditingVehicle(null);
             } else {
-                // Add new vehicle
+                // Add a new vehicle
                 const response = await axios.post('/api/vehicle', formData, config);
                 setVehicles([...vehicles, response.data]);
             }
 
+            // Reset the form data
             setFormData({
                 brand: '',
                 model: '',
@@ -68,12 +82,14 @@ const Vehicles = () => {
                 color: '',
             });
 
-            alert('Added vehicle sudccesfully')
+            // Display a success message
+            alert('Added vehicle successfully');
         } catch (error) {
             console.error('Failed to save vehicle:', error);
         }
     };
 
+    // Function to handle vehicle editing
     const handleEdit = (vehicle) => {
         setEditingVehicle(vehicle);
         setFormData({
@@ -85,24 +101,31 @@ const Vehicles = () => {
         });
     };
 
+    // Function to handle vehicle deletion
     const handleDelete = async (vehicleId) => {
         try {
+            // Get the user token from localStorage
             const token = JSON.parse(localStorage.getItem('userInfo')).token;
+
+            // Set up the axios request configuration
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             };
 
+            // Make a DELETE request to delete the vehicle
             await axios.delete(`/api/vehicle/${vehicleId}`, config);
             setVehicles(vehicles.filter(vehicle => vehicle._id !== vehicleId));
 
-            alert("deleted vehicle successfully")
+            // Display a success message
+            alert("Deleted vehicle successfully");
         } catch (error) {
             console.error('Failed to delete vehicle:', error);
         }
-    };
+    }
 
+// Render the Vehicles component
     return (
         <div className="flex text-black h-screen">
             {/* Sidebar to view added vehicles */}

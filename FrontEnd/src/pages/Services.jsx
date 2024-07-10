@@ -4,8 +4,12 @@ import { useAuth } from '../context/AuthProvider'; // Import the custom hook
 import bin from '../assets/delete.png';
 import UpdateServiceModal from '../components/UpdateServiceModal';
 
+
 const Services = () => {
-    const { user } = useAuth(); // Access user state from context
+    // Access user state from context
+    const { user, setUser } = useAuth(); // Assuming setUser is available from the context
+
+    // State variables to hold the services, name, description, price, and modal state
     const [services, setServices] = useState([]);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -13,71 +17,102 @@ const Services = () => {
     const [isModalOpen, setModalOpen] = useState(false);
     const [selectedService, setSelectedService] = useState(null);
 
+    // Fetch user from localStorage on component mount
     useEffect(() => {
-        if (user && user.token) {
-            fetchServices();
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        if (userInfo) {
+            setUser(userInfo);
         }
-    }, [user]); // Fetch services when user changes
+    }, [setUser]);
 
-    const handlePriceChange = (event) => {
-        setPrice(event.target.value);
-    };
+    // Fetch services when user changes
+    useEffect(() => {
+        if (user && user._id) {
+            fetchServices(user._id);
+        }
+    }, [user]);
 
+    // Function to handle form submission
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const token = user.token; // Get token from user object
+            // Get token from user object
+            const token = user.token;
+
+            // If no token found, throw an error
             if (!token) {
                 throw new Error('No token found');
             }
 
+            // Set up axios request configuration
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             };
 
+            // Make POST request to add a new service
             const { data } = await axios.post('/api/services/', { name, description, price }, config);
-            console.log(data)
+
+            // Add the new service to the local state
             setServices([...services, data]);
+
+            // Clear the form fields
             setName('');
             setDescription('');
             setPrice(0);
 
+            // Display an alert message
+            alert("Service added Successfully");
+
         } catch (error) {
             console.error('Failed to add service:', error);
-            // alert('Failed to add service');
+            alert('Failed to add service');
         }
     };
 
+    // Function to fetch services
     const fetchServices = async () => {
         try {
-            const token = user.token; // Get token from user object
+            // Get token from user object
+            const token = user.token;
+
+            // If no token found, throw an error
             if (!token) {
                 throw new Error('No token found');
             }
 
+            // Set up axios request configuration
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             };
 
+            // Make GET request to fetch services
             const { data } = await axios.get('/api/services', config);
+
+            // Set the services in the local state
             setServices(data);
+
         } catch (error) {
             console.error('Failed to fetch services:', error);
-            // alert('Failed to fetch services');
+            alert('Failed to fetch services');
         }
     };
 
-    const deleteService = async (id) => { 
+    // Function to delete a service
+    const deleteService = async (id) => {
         try {
-            const token = user.token; // Get token from user object
+            // Get token from user object
+            const token = user.token;
+
+            // If no token found, throw an error
             if (!token) {
-                throw new Error('No token found'); 
+                throw new Error('No token found');
             }
 
+            // Set up axios request configuration
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -89,19 +124,28 @@ const Services = () => {
 
             // Remove the deleted service from the local state
             setServices(services.filter(service => service._id !== id));
+
+            // Display an alert message
+            alert("Service deleted Successfully");
+
         } catch (error) {
             console.error('Failed to delete service:', error);
-            // alert('Failed to delete service');
+            alert('Failed to delete service');
         }
     };
 
+    // Function to update a service
     const updateService = async (id, updatedService) => {
         try {
-            const token = user.token; // Get token from user object
+            // Get token from user object
+            const token = user.token;
+
+            // If no token found, throw an error
             if (!token) {
                 throw new Error('No token found');
             }
 
+            // Set up axios request configuration
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -113,22 +157,29 @@ const Services = () => {
 
             // Update the service in the local state
             setServices(services.map(service => (service._id === id ? data : service)));
+
+            // Display an alert message
+            alert("Service updated Successfully");
+
         } catch (error) {
             console.error('Failed to update service:', error);
-            // alert('Failed to update service');
+            alert('Failed to update service');
         }
     };
 
+    // Function to open the modal
     const openModal = (service) => {
         setSelectedService(service);
         setModalOpen(true);
     };
 
+    // Function to close the modal
     const closeModal = () => {
         setSelectedService(null);
         setModalOpen(false);
     };
 
+// Render the services component
     return (
         <>
         <div className="flex h-screen bg-gray-100 text-black">
