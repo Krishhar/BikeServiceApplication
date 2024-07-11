@@ -42,7 +42,7 @@ const CustBooking = () => {
             const { data } = await axios.post('/api/bookings/', {
                 serviceId: selectedServiceId,
                 date: bookingDate,
-                vehicleId: vehicle._id
+                vehicleId: vehicle
             }, config);
 
             // Add the new booking to the local state
@@ -227,6 +227,7 @@ const CustBooking = () => {
 
     // Function to handle the vehicle selection
     const handleSelectVehicle = (vehicle) => {
+        console.log(vehicle)
         handleSubmit(vehicle);
     };
 

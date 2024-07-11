@@ -163,7 +163,8 @@ const createBooking = async (req, res) => {
 const getAllBookings = async (req, res) => {
     try {
         // Find all bookings for the authenticated customer, and populate the serviceId field
-        const booking = await Booking.find({ customerId: req.user.id }).populate('serviceId', 'name price description')
+        const booking = await Booking.find({ customerId: req.user.id })
+        .populate('serviceId', 'name price description')
 
         // Return the bookings in the response
         res.status(200).json(booking);

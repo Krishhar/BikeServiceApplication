@@ -172,6 +172,7 @@ const previousServices = async (req, res) => {
         const bookings = await Booking.find({ customerId: req.user.id, status: 'completed' })
             .populate('serviceId')
             .populate('vehicleId')
+            .populate('ownerId')
 
         // Return the bookings in the response
         res.json(bookings);

@@ -151,7 +151,6 @@ const Booking = () => {
                         </button>
                     </div>
 
-                    <input type="text" placeholder="Search booking..." className="p-2 bg-gray-100 rounded-md" />
                 </div>
                 <div className="p-4">
                     <p className="text-gray-500 mb-4">{bookings.length} documents</p>
@@ -172,9 +171,10 @@ const Booking = () => {
                                 <tr key={index} className="border-t">
                                     {/* Table cell for the customer information */}
                                     <td className="py-4">
-                                        <div className="flex items-center">
+                                        <div>
                                             {/* Customer name */}
                                             <p className="font-medium">{booking.customerId.name}</p>
+                                            <br />
                                             {/* Date booked */}
                                             <p className="text-xs text-gray-500">
                                                 Booked on {new Date(booking.date).toISOString().split('T')[0]}

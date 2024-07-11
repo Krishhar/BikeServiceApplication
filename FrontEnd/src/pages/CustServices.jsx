@@ -44,10 +44,6 @@ const CustServices = () => {
             {/* Section title */}
             <h1 className="text-2xl font-semibold mb-4 text-black overflow-scroll">Previous Booking Details</h1>
             <div className="bg-white rounded-lg shadow">
-                {/* Search input */}
-                <div className="flex justify-between items-center p-4 border-b">
-                    <input type="text" placeholder="Search booking..." className="p-2 bg-gray-100 rounded-md" />
-                </div>
                 {/* Bookings table */}
                 <div className="p-4">
                     <p className="text-gray-500 mb-4">{bookings.length} documents</p>
