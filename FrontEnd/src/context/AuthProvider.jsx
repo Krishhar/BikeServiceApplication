@@ -12,7 +12,7 @@ const AuthProvider = ({ children }) => {
         if (storedUser) {
             setUser(JSON.parse(storedUser));
         } else {
-            navigate("/"); // Redirect to login if no user is found
+            navigate("/login"); // Redirect to login if no user is found
         }
     }, []);
 

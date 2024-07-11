@@ -43,8 +43,13 @@ const CustomerProfile = () => {
             setName(data.name);
             setEmail(data.email);
             setPhone(data.ph);
+
         } catch (error) {
             console.error('Failed to fetch customer details:', error);
+        }
+
+        finally{
+            setLoading(false)
         }
     };
 

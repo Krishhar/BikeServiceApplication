@@ -1,5 +1,5 @@
 
-# Bike Service application
+# Bike Service application - FrontEnd
 
 This project provides a complete setup for a bike service application using React and Vite for the frontend, and a corresponding backend 
 
@@ -27,7 +27,7 @@ Install my-project with npm
 
 ```bash
 git clone https://github.com/Krishhar/BikeServiceApplication.git
-cd BikeServiceApplication
+cd BikeServiceApplication/FrontEnd
 ```
 2. Install Dependencies
 

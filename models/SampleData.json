@@ -1,0 +1,81 @@
+{
+    "Customer": [
+        {
+            "name": "hari",
+            "email": "hari@gmail.com",
+            "password": "123456",
+            "role": "customer"
+        }
+    ],
+    "Owner": [
+        {
+            "name": "krish",
+            "email": "krish@gmail.com",
+            "password": "123456",
+            "role": "owner"
+        }
+    ],
+    "services": [
+        {
+            "name": "Basic Service",
+            "description": "Basic bike service",
+            "price": 50,
+            "ownerId": "60d21b4667d0d8992e610c85"
+        }
+    ],
+    "bookings": [
+        {
+            "customerId": "6108e4f6a3d1d12d0c8b4567",
+            "serviceId": "6108e4f6a3d1d12d0c8b4568",
+            "vehicleId": "6108e4f6a3d1d12d0c8b4569",
+            "ownerId": "6108e4f6a3d1d12d0c8b4570",
+            "date": "2024-07-20",
+            "status": "pending"
+        },
+        {
+            "customerId": "6108e4f6a3d1d12d0c8b4571",
+            "serviceId": "6108e4f6a3d1d12d0c8b4572",
+            "vehicleId": "6108e4f6a3d1d12d0c8b4573",
+            "ownerId": "6108e4f6a3d1d12d0c8b4574",
+            "date": "2024-07-25",
+            "status": "ready for delivery"
+        },
+        {
+            "customerId": "6108e4f6a3d1d12d0c8b4575",
+            "serviceId": "6108e4f6a3d1d12d0c8b4576",
+            "vehicleId": "6108e4f6a3d1d12d0c8b4577",
+            "ownerId": "6108e4f6a3d1d12d0c8b4578",
+            "date": "2024-07-30",
+            "status": "completed"
+        }
+    ],
+    "Vehicle": [
+        {
+            "brand": "Toyota",
+            "model": "Corolla",
+            "year": 2020,
+            "licensePlate": "ABC123",
+            "color": "Silver",
+            "serviceId": "6108e4f6a3d1d12d0c8b4568",
+            "customerId": "6108e4f6a3d1d12d0c8b4567"
+        },
+        {
+            "brand": "Honda",
+            "model": "Civic",
+            "year": 2018,
+            "licensePlate": "XYZ456",
+            "color": "Blue",
+            "serviceId": "6108e4f6a3d1d12d0c8b4572",
+            "customerId": "6108e4f6a3d1d12d0c8b4571"
+        },
+        {
+            "brand": "Ford",
+            "model": "Mustang",
+            "year": 2022,
+            "licensePlate": "GHI789",
+            "color": "Red",
+            "serviceId": "6108e4f6a3d1d12d0c8b4576",
+            "customerId": "6108e4f6a3d1d12d0c8b4575"
+        }
+    ]
+}

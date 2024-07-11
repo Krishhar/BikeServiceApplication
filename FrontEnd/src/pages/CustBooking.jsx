@@ -338,6 +338,7 @@ const CustBooking = () => {
                                     id={`date-${index}`}
                                     className="p-2 border rounded w-full shadow-inner shadow-gray-400"
                                     onChange={(e) => setBookingDate(e.target.value)}
+                                    min={new Date().toISOString().split('T')[0]}
                                 />
                             </div>
                             {/* Book now button */}
