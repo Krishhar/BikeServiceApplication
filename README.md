@@ -83,10 +83,15 @@ Represents a customer who can book services.
 
 ```javascript
 {
+  role: { type: String, enum: ['customer'], default: 'customer' }
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: String, enum: ['customer'], default: 'customer' }
+  ph: { type: String, required: true },
+  bookingId: { type: mongoose.Schema.Types.ObjectId, ref: 'Bookings', default: null },
+
+
+
 }
 ```
 ### Owner
@@ -94,10 +99,14 @@ Represents a service owner who can offer services.
 
 ```javascript
 {
+  role: { type: String, enum: ['owner'], default: 'owner' },
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: String, enum: ['owner'], default: 'owner' }
+  ph: { type: String, required: true },
+  address: { type: String, required: true },
+  maxLimit: { type: Number, required: true, default: 5},
+
 }
 ```
 
@@ -149,18 +158,22 @@ Below is a set of sample data representing entries for each collection in the da
 {
   "Customer": [
     {
+      "role": "customer",
       "name": "hari",
       "email": "hari@gmail.com",
       "password": "123456",
-      "role": "customer"
+      "ph":"1089897860",
     }
   ],
   "Owner": [
     {
+      "role": "owner",
       "name": "krish",
       "email": "krish@gmail.com",
       "password": "123456",
-      "role": "owner"
+      "ph" : "9878984401",
+      "address" : "8/211, Kec Erode TamilNadu",
+      "maxLimit" : 5
     }
   ],
   "services": [
@@ -228,6 +241,132 @@ Below is a set of sample data representing entries for each collection in the da
   ]
 }
 ```
+
+
+## API Routes
+
+**Owner Routes (/api/owner)**
+
+```javascript
+1. POST /api/owner/
+
+- Description: Register a new owner.
+
+2. POST /api/owner/login
+
+- Description: Login for an owner.
+
+3. GET /api/owner/:id
+
+- Description: Get details of an owner by ID.
+
+4. PUT /api/owner/:id
+
+- Description: Update owner details by ID.
+
+5. DELETE /api/owner/:id
+
+- Description: Delete an owner by ID.
+
+```
+
+**Service Routes (/api/services)**
+
+```javascript
+1. POST /api/services/
+- Description: Create a new service (only for owners).
+
+2. GET /api/services/
+- Description: Get all services for the logged in owner.
+
+3. GET /api/services/:id
+- Description: Get details of a service by ID (only for owners).
+
+4. PUT /api/services/:id
+- Description: Update a service by ID (only for owners).
+
+5. DELETE /api/services/:id
+- Description: Delete a service by ID (only for owners).
+
+6. GET /api/services/customer
+- Description: Get previous services of the logged in customer.
+
+7. GET /api/services/lowest-price
+- Description: Get the cheapest services for the logged in customer.
+
+8. GET /api/services/search
+- Description: Search for a services by the customer.
+
+```
+
+**Customer Routes (/api/customer)**
+```javascript
+1. POST /api/customer/
+   - Description: Register a new customer.
+
+2. POST /api/customer/login
+   - Description: Login for a customer.
+
+3. GET /api/customer/:id
+   - Description: Get details of a customer by ID.
+
+4. PUT /api/customer/:id
+   - Description: Update customer details by ID.
+
+5. DELETE /api/customer/:id
+   - Description: Delete a customer by ID.
+
+```
+
+**Booking Routes (/api/bookings)**
+
+```javascript
+1. POST /api/bookings
+   - Description: Create a new booking (for customers).
+
+2. GET /api/bookings
+   - Description: Get all bookings (for logged in customers).
+
+3. GET /api/bookings/:id
+   - Description: Get details of a booking by ID (for logged in customer).
+
+4. DELETE /api/bookings/:id
+   - Description: Cancel a booking by ID (for logged in customer).
+
+
+5. GET /api/bookings/owner
+   - Description: Get all bookings (for logged in owner).
+
+6. GET /api/bookings/owner/:id
+   - Description: Get booking details by ID for an owner.
+
+7. PUT /api/bookings/owner/:id
+   - Description: Update booking status by ID for an owner.
+
+8. DELETE /api/bookings/owner/:id
+   - Description: Cancel a booking by ID for an owner.
+```
+
+**Vehicle Routes (/api/vehicle)**
+
+```javascript
+1. POST /api/vehicle
+   - Description: Save a new vehicle.
+
+2. GET /api/vehicle
+   - Description: Get all vehicles.
+
+3. GET /api/vehicle/:id
+   - Description: Get details of a vehicle by ID.
+
+4. PUT /api/vehicle/:id
+   - Description: Update a vehicle by ID.
+
+5. DELETE /api/vehicle/:id
+   - Description: Delete a vehicle by ID.
+```
+
+
 ## Deployment
 
 To deploy the application, you need to follow these steps:
