@@ -117,12 +117,45 @@ const Booking = () => {
         }
     }
 
+    // Function to handle booking cancellation
+    const handleCancelBooking = async (bookingId) => {
+        try {
+            // Get token from user object
+            const token = user.token;
+
+            // If no token found, throw an error
+            if (!token) {
+                throw new Error('No token found');
+            }
+
+            // Set up axios request configuration
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            };
+
+            // Make DELETE request to cancel the booking
+            await axios.delete(`/api/bookings/owner/${bookingId}`, config);
+
+            // Remove the canceled booking from the local state
+            setBookings(bookings.filter((booking) => booking._id !== bookingId));
+
+            // Display an alert message
+            alert('Booking canceled successfully');
+        } catch (error) {
+            console.error('Failed to cancel booking:', error);
+            alert("Failed to cancel booking");
+        }
+    };
+
+
 // Render the booking component
 
     return (
         <div className="p-6 bg-gray-100 text-black h-screen overflow-scroll">
             <h1 className="text-2xl font-semibold mb-4 text-black">Booking Details</h1>
-            <div className="bg-white rounded-lg shadow ">
+            <div className="bg-white rounded-lg shadow">
                 <div className="flex justify-between items-center p-4 border-b">
                     <div className="space-x-4">
                         <button
@@ -150,7 +183,6 @@ const Booking = () => {
                             completed
                         </button>
                     </div>
-
                 </div>
                 <div className="p-4">
                     <p className="text-gray-500 mb-4">{bookings.length} documents</p>
@@ -163,6 +195,7 @@ const Booking = () => {
                                 <th>Phone</th>
                                 <th>Status</th>
                                 <th>Update Status</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -211,15 +244,20 @@ const Booking = () => {
                                             <option value="completed">completed</option>
                                         </select>
                                     </td>
+                                    <td>
+                                        {booking.status === 'pending' && (
+                                            <button
+                                                className="text-red-600"
+                                                onClick={() => handleCancelBooking(booking._id)}
+                                            >
+                                                Cancel
+                                            </button>
+                                        )}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
-                    {errorMessage && (
-                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4" role="alert">
-                            <span className="block sm:inline">{errorMessage}</span>
-                        </div>
-                    )}
                 </div>
             </div>
         </div>

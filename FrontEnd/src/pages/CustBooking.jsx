@@ -52,7 +52,12 @@ const CustBooking = () => {
             alert('Booked service successfully');
         } catch (error) {
             console.error('Failed to book service:', error);
-            alert('Failed to book service');
+            // Check if the error response is due to booking limit reached
+            if (error.response && error.response.data && error.response.data.msg) {
+                alert(error.response.data.msg);
+            } else {
+                alert('Failed to book service');
+            }
         }
         // Close the modal
         setIsModalOpen(false);

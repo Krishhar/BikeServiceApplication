@@ -11,6 +11,7 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [ph, setPh] = useState('');
+    const [maxLimit, setMaxLimit] = useState(5);
     const [address, setAddress] = useState('');
     const [role, setRole] = useState('owner');
 
@@ -62,6 +63,7 @@ const Register = () => {
                     email,
                     password,
                     ph,
+                    maxLimit,
                     address,
                     role
                 };
@@ -76,7 +78,7 @@ const Register = () => {
                     );
                     // Store the owner information in localStorage
                     localStorage.setItem("ownerInfo", JSON.stringify(response.data));
-                    navigate('/OwnerPage');
+                    navigate('/login');
                 } else {
                     // Create the customer data object
                     const userData1 = {
@@ -96,7 +98,7 @@ const Register = () => {
 
                     // Store the customer information in localStorage
                     localStorage.setItem("customerInfo", JSON.stringify(response.data));
-                    navigate('/customerPage');
+                    navigate('/login');
                 }
             } catch (error) {
                 console.error('Registration failed:', error);
@@ -171,6 +173,18 @@ const Register = () => {
                     />
                     {!isPhoneValid && <span className='text-red-500 text-sm'>Invalid phone number</span>}
                 </div>
+                {role === "owner" && (
+                    <div className="w-full mb-4">
+                        <label className='block text-left mb-2 font-bold'>Maximum Booking per day</label>
+                        <input
+                            id='address'
+                            className="w-full p-2 border border-gray-300 rounded text-black"
+                            placeholder="Your Address"
+                            value={maxLimit}
+                            onChange={(e) => setMaxLimit(e.target.value)}
+                            required={role === "owner"}></input>
+                    </div>
+                )}
                 {/* Address input (only for owners) */}
                 {role === "owner" && (
                     <div className="w-full mb-4">
@@ -184,6 +198,7 @@ const Register = () => {
                             required={role === "owner"}></textarea>
                     </div>
                 )}
+
                 {/* Register button */}
                 <button type="submit" className="w-full p-2 bg-green-500 text-white rounded text-lg" disabled={!isFormValid}>Register</button>
             </form>

@@ -7,7 +7,7 @@ const genToken = require('../config/Token')
 const regOwner = async (req, res) => {
     try {
         // Extract the required fields from the request body
-        const { name, email, password, ph, address } = req.body
+        const { name, email, password, ph, maxLimit ,address } = req.body
 
         // Check if all required fields are provided
         if (!name || !email || !password || !ph) {
@@ -28,6 +28,7 @@ const regOwner = async (req, res) => {
             email,
             password,
             ph,
+            maxLimit,
             address,
         })
 
@@ -39,6 +40,7 @@ const regOwner = async (req, res) => {
                 name: owner.name,
                 email: owner.email,
                 ph: owner.ph,
+                maxLimit: owner.maxLimit,
                 address: owner.address,
                 storeId: owner.storeId,
                 token: genToken(owner._id, owner.role)

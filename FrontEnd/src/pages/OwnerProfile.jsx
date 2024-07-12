@@ -7,6 +7,7 @@ const OwnerProfile = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
+    const [maxLimit, setMaxLimit] = useState(0);
     const [address, setAddress] = useState('');
     const [profile, setProfile] = useState({});
     const [loading, setLoading] = useState(true);
@@ -43,6 +44,7 @@ const OwnerProfile = () => {
             setProfile(data);
             setName(data.name);
             setEmail(data.email);
+            setMaxLimit(data.maxLimit);
             setPhone(data.ph);
             setAddress(data.address);
         } catch (error) {
@@ -76,6 +78,7 @@ const OwnerProfile = () => {
                 name,
                 email,
                 phone,
+                maxLimit,
                 address
             };
 
@@ -129,6 +132,17 @@ const OwnerProfile = () => {
                                 onChange={(e) => setPhone(e.target.value)}
                             />
                         </div>
+
+                            {/* MaxLimit input field */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">MaxLimit</label>
+                                <input
+                                    type="number"
+                                    className="w-full p-2 border rounded-md"
+                                    value={maxLimit}
+                                    onChange={(e) => setMaxLimit(e.target.value)}
+                                />
+                            </div>
 
                         {/* Address textarea */}
                         <div>

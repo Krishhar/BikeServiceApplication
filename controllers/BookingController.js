@@ -87,9 +87,48 @@ Bike Service`
     });
 };
 
-// @desc    Create a new Booking
-// @route   POST /booking
-// @access  Private (only for customers)
+
+// Function to send an email notifying the customer about the cancel of booking
+const sendCancelEmail = ( customer, vehicle, booking) => {
+    // Create a transporter for sending the email
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+        }
+    });
+
+    // Prepare the email options
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: customer.email,
+        subject: 'Your Booking is cancelled',
+        text: `Dear ${customer.name},
+
+Your Booking on ${booking.date} was cancelled. Please find the details below:
+ 
+Customer Name: ${customer.name} 
+Vehicle Brand: ${vehicle.brand}
+Vehicle Model: ${vehicle.model}  
+Vehicle Year: ${vehicle.year} 
+Vehicle License Plate: ${vehicle.licensePlate}
+
+We are sorry for the inconvenience.
+
+Best regards,
+Bike Service`
+    };
+
+    // Send the email
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error('Error sending email:', error);
+        } else {
+            console.log('Email sent:', info.response);
+        }
+    });
+};
 
 const createBooking = async (req, res) => {
     const { serviceId, date, vehicleId } = req.body;
@@ -103,7 +142,7 @@ const createBooking = async (req, res) => {
         }
 
         // Find the service
-        const service = await Service.findById(serviceId).populate('ownerId', 'name ph email');
+        const service = await Service.findById(serviceId).populate('ownerId', 'name ph email maxLimit');
         if (!service) {
             return res.status(404).json({ msg: 'Service not found' });
         }
@@ -114,11 +153,24 @@ const createBooking = async (req, res) => {
             return res.status(404).json({ msg: 'Vehicle not found' });
         }
 
+        // Check the number of bookings for the given date
+        const bookingCount = await Booking.countDocuments({
+            ownerId: service.ownerId._id,
+            date
+        });
+
+        console.log(bookingCount)
+        console.log(service.ownerId.maxLimit)
+        // Check if the booking count exceeds the owner's maximum allowed bookings
+        if (bookingCount >= service.ownerId.maxLimit) {
+            return res.status(400).json({ msg: 'Booking limit reached for the selected day' });
+        }
+
         // Create a new booking
         const newBooking = new Booking({
             customerId,
             serviceId,
-            ownerId: service.ownerId,
+            ownerId: service.ownerId._id,
             vehicleId: vehicle._id,
             date,
             status: 'pending'
@@ -273,6 +325,44 @@ const updateBookingStatus = async (req, res) => {
     }
 };
 
+// @desc    Cancel a Booking
+// @route   DELETE /api/bookings/:id
+// @access  Private (only for owners)
+
+const cancelBooking = async (req, res) => {
+    const bookingId = req.params.id;
+    const ownerId = req.user.id;
+
+    try {
+        // Find the booking by ID
+        const booking = await Booking.findById(bookingId)
+        .populate('customerId')
+        .populate('vehicleId');
+        if (!booking) {
+            return res.status(404).json({ msg: 'Booking not found' });
+        }
+
+        // Check if the logged-in owner is the owner of the service
+        if (booking.ownerId.toString() !== ownerId) {
+            return res.status(401).json({ msg: 'Not authorized to cancel this booking' });
+        }
+
+        console.log(booking.vehicleId.brand)
+         
+        sendCancelEmail( booking.customerId, booking.vehicleId, booking);
+
+        // Remove the booking
+        await Booking.deleteOne({ _id: bookingId });
+
+        // Respond with success message
+        res.json({ msg: 'Booking canceled successfully' });
+    } catch (error) {
+        console.error('Failed to cancel booking:', error);
+        res.status(500).json({ msg: 'Server error' });
+    }
+};
+
+
 // @desc    Delete specified services for the authenticated customer
 // @route   DELETE /booking/:id
 // @access  Private (only for authenticated customer)
@@ -365,6 +455,7 @@ module.exports = {
     createBooking,
     getAllBookings,
     getBookingById,
+    cancelBooking,
     getPreviousBookings,
     deleteBookingById,
     getAllBookingsForOwner,

@@ -114,6 +114,37 @@ netlify deploy --prod
 ```
 Follow the prompts to link your site and deploy the dist directory.
 
+## Screeshots
+
+- Home page
+![Home Page](ScreenShots/image.png)
+
+- Login Page
+![Login Page](ScreenShots/image-1.png)
+
+- OwnerLogin Form
+![Owner Login form](ScreenShots/image-2.png)
+
+- Owner Service Page
+![Service Page for owner](ScreenShots/image-3.png)
+
+- Owner Booking Details page
+![Booking page for owner](ScreenShots/image-4.png)
+
+- Profile Page
+![Owner Profile](ScreenShots/image-5.png)
+
+- CustomerLogin Form
+![Customer Login Form](ScreenShots/image-6.png)
+
+- Customer Booking Page
+![Customer Booking Page](ScreenShots/image-7.png)
+
+- Customer Vehicle Page
+![Customer Vehicle Page](ScreenShots/image-8.png)
+
+
+
 
 ## Contributing
 

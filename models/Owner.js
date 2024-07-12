@@ -9,13 +9,13 @@ const OwnerSchema = new schema({
     password: { type: String, required: true },
     ph: { type: String, required: true },
     address: { type: String, required: true },
-    storeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Store', default: null },
+    maxLimit: { type: Number, required: true, default: 5},
 }, { timestamps: true })
 
 OwnerSchema.pre("save", async function (next) {
     if (!this.isModified('password')) {
         next() 
-    }
+    } 
 
     const salt = await bcrypt.genSalt(10)
     this.password = await bcrypt.hash(this.password, salt)

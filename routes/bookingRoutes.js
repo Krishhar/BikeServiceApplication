@@ -3,6 +3,7 @@ const { protect, user, admin } = require('../Middlewares/authMiddleware')
 const { createBooking,
     getAllBookings,
     getBookingById,
+    cancelBooking,
     getPreviousBookings,
     deleteBookingById,
     getAllBookingsForOwner,
@@ -20,6 +21,7 @@ router.route('/owner')
 router.route('/owner/:id')
     .get(protect, admin, getBookingByIdForOwner)
     .put(protect, admin, updateBookingStatus)
+    .delete(protect,admin,cancelBooking)
 
 // Customer routes
 
