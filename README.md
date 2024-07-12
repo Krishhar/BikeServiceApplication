@@ -232,8 +232,25 @@ Below is a set of sample data representing entries for each collection in the da
 
 To deploy the application, you need to follow these steps:
 
-- Configure the Environment Variables
-- Ensure you have the necessary environment variables set in your hosting environment.
+### Configure the Environment Variables
+
+Ensure you have the necessary environment variables set in your hosting environment. The required variables are:
+
+- `PORT`
+- `MONGO_URI`
+- `SECRET`
+- `EMAIL_USER`
+- `EMAIL_PASS`
+
+Example configuration in `.env` file:
+
+```bash
+PORT=3000
+MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/<dbname>?retryWrites=true&w=majority
+SECRET=your_secret_key
+EMAIL_USER=your_email@example.com
+EMAIL_PASS=your_email_password
+
 
 ## Deploy the Application
 
