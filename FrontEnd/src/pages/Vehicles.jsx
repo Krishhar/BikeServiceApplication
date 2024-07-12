@@ -127,14 +127,14 @@ const Vehicles = () => {
 
 // Render the Vehicles component
     return (
-        <div className="flex text-black h-screen">
+        <div className="flex text-black h-screen bg-white">
             {/* Sidebar to view added vehicles */}
-            <div className="w-40% bg-gray-200 p-4 m-6">
+            <div className="w-40% bg-gray-200 p-4 m-6 border-4 border-blue-300 mb-40 overflow-y-scroll scroll-smooth">
                 <h2 className="text-xl font-bold mb-4">My Vehicles</h2>
                 <ul className="space-y-4">
                     {vehicles.map((vehicle) => (
                         <li key={vehicle._id}>
-                            <div className="bg-white rounded-lg shadow-md p-6 flex justify-between items-center">
+                            <div className="bg-white rounded-lg shadow-inner shadow-black border-4 border-blue-200 p-6 flex justify-between items-center">
                                 <div className="flex-grow">
                                     <h3 className="text-xl font-semibold mb-3">{vehicle.brand} {vehicle.model}</h3>
                                     <div className="space-y-2 text-gray-600">
@@ -142,15 +142,15 @@ const Vehicles = () => {
                                         <p><span className="font-medium">License Plate:</span> {vehicle.licensePlate}</p>
                                         <p><span className="font-medium">Color:</span> {vehicle.color}</p>
                                     </div>
-                                    <div className="flex mt-4 space-x-3">
+                                    <div className="flex mt-4 space-x-3 ">
                                         <button
-                                            className="bg-blue-600 text-white px-4 py-2 rounded-full font-medium hover:bg-blue-700 transition duration-300"
+                                            className="bg-blue-600 text-white shadow-md border-2 border-blue-300 p-2 shadow-gray-700 px-4 py-2 rounded-full font-medium hover:bg-blue-700 transition duration-300"
                                             onClick={() => handleEdit(vehicle)}
                                         >
                                             Edit
                                         </button>
                                         <button
-                                            className="bg-red-600 text-white px-4 py-2 rounded-full font-medium hover:bg-red-700 transition duration-300"
+                                            className="bg-red-600 text-white shadow-md border-2 border-red-300 p-2 shadow-gray-700 px-4 py-2 rounded-full font-medium hover:bg-red-700 transition duration-300"
                                             onClick={() => handleDelete(vehicle._id)}
                                         >
                                             Delete
@@ -158,8 +158,8 @@ const Vehicles = () => {
                                     </div>
                                 </div>
                                 <div className="flex flex-col items-center ml-6">
-                                    <div className="text-5xl mb-2">
-                                        { '🏍️'}
+                                    <div className="text-5xl mb-2 shadow-inner shadow-black border-8 border-double border-blue-300 bg-blue-600 py-1 hover:bg-black">
+                                        { '🏍️'}{'🧑‍🔧'}
                                     </div>
                                 </div>
                             </div>
@@ -169,62 +169,62 @@ const Vehicles = () => {
             </div>
 
             {/* Form to add or update a vehicle */}
-            <div className="w-3/4 p-4">
-                <h2 className="text-xl font-bold mb-4">{editingVehicle ? 'Update Vehicle' : 'Add Vehicle'}</h2>
+            <div className="w-3/4 p-4 mx-20 mb-40 mt-6 shadow-inner shadow-gray-700">
+                <h2 className="text-xl font-extrabold mb-4">{editingVehicle ? 'Update Vehicle' : 'Add Vehicle'}</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label className="block text-gray-700">Brand</label>
+                        <label className="block text-gray-700 font-bold">Brand</label>
                         <input
                             type="text"
                             name="brand"
                             value={formData.brand}
                             onChange={handleChange}
-                            className="w-full p-2 border rounded"
+                            className="w-full p-2 border-4 border-blue-500 rounded-xl bg-blue-100 shadow-inner shadow-gray-600"
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700">Model</label>
+                        <label className="block text-gray-700 font-bold">Model</label>
                         <input
                             type="text"
                             name="model"
                             value={formData.model}
                             onChange={handleChange}
-                            className="w-full p-2 border rounded"
+                            className="w-full p-2 border-4 border-blue-500 rounded-xl bg-blue-100 shadow-inner shadow-gray-600"
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700">Year</label>
+                        <label className="block text-gray-700 font-bold">Year</label>
                         <input
                             type="text"
                             name="year"
                             value={formData.year}
                             onChange={handleChange}
-                            className="w-full p-2 border rounded"
+                            className="w-full p-2 rounded-xl bg-blue-100 border-4 border-blue-500 shadow-inner shadow-gray-600"
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700">License Plate</label>
+                        <label className="block text-gray-700 font-bold">License Plate</label>
                         <input
                             type="text"
                             name="licensePlate"
                             value={formData.licensePlate}
                             onChange={handleChange}
-                            className="w-full p-2 border rounded"
+                            className="w-full p-2 border-4 border-blue-500 rounded-xl bg-blue-100 shadow-inner shadow-gray-600"
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700">Color</label>
+                        <label className="block text-gray-700 font-bold">Color</label>
                         <input
                             type="text"
                             name="color"
                             value={formData.color}
                             onChange={handleChange}
-                            className="w-full p-2 border rounded"
+                            className="w-full p-2 rounded-xl bg-blue-100 shadow-inner border-4 border-blue-500 shadow-gray-600"
                         />
                     </div>
                     <button
                         type="submit"
-                        className="bg-blue-500 text-white px-4 py-2 rounded"
+                        className="bg-blue-500 text-white border-4 border-blue-200 px-4 py-2 rounded shadow-md shadow-gray-500"
                     >
                         {editingVehicle ? 'Update Vehicle' : 'Add Vehicle'}
                     </button>

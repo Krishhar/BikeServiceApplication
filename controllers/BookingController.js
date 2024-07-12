@@ -92,7 +92,7 @@ Bike Service`
 // @access  Private (only for customers)
 
 const createBooking = async (req, res) => {
-    const { serviceId, date } = req.body;
+    const { serviceId, date, vehicleId } = req.body;
     const customerId = req.user.id;
 
     try {
@@ -108,8 +108,8 @@ const createBooking = async (req, res) => {
             return res.status(404).json({ msg: 'Service not found' });
         }
 
-        // Find the customer's vehicle
-        const vehicle = await Vehicle.findOne({ customerId });
+        // Find the specific vehicle of the customer
+        const vehicle = await Vehicle.findOne({ _id: vehicleId, customerId });
         if (!vehicle) {
             return res.status(404).json({ msg: 'Vehicle not found' });
         }
@@ -316,7 +316,7 @@ const getAllBookingsForOwner = async (req, res) => {
         const bookings = await Booking.find({ serviceId: { $in: serviceIds } })
             .populate('customerId', 'name email ph')
             .populate('serviceId', 'name')
-            .populate('vehicleId', 'brand model year licensePlate color');
+            .populate('vehicleId', 'brand model licensePlate');
 
         // Return the bookings in the response
         res.status(200).json(bookings)

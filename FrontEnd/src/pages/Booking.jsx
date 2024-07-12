@@ -187,7 +187,7 @@ const Booking = () => {
                                     <td>
                                         <div className="flex items-center">
                                             {/* Vehicle license plate */}
-                                            {booking.vehicleId.licensePlate}
+                                            {booking.vehicleId?.licensePlate || 'N/A'}
                                         </div>
                                     </td>
                                     {/* Table cell for the customer phone number */}

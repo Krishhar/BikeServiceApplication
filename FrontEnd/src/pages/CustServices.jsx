@@ -74,7 +74,7 @@ const CustServices = () => {
                                     <td>{booking.serviceId.name}</td>
                                     <td>
                                         <div className="flex items-center">
-                                            {booking.vehicleId.licensePlate}
+                                            {booking.vehicleId?.licensePlate || 'N/A'}
                                         </div>
                                     </td>
                                     <td>{booking.ownerId.ph}</td>

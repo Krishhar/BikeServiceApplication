@@ -15,7 +15,7 @@ const CustBooking = () => {
     const [selectedServiceId, setSelectedServiceId] = useState(null);
 
     // Function to handle the booking submission
-    const handleSubmit = async (vehicle) => {
+    const handleSubmit = async (selectedVehicleId) => {
         try {
             // Get token from user object
             const token = user.token;
@@ -42,7 +42,7 @@ const CustBooking = () => {
             const { data } = await axios.post('/api/bookings/', {
                 serviceId: selectedServiceId,
                 date: bookingDate,
-                vehicleId: vehicle
+                vehicleId: selectedVehicleId
             }, config);
 
             // Add the new booking to the local state
